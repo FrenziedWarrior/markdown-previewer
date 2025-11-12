@@ -1,0 +1,156 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&display=swap");
+
+@import "tailwindcss";
+
+:root {
+  font-family: "Inter", system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+ */
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.markdown-body > *:first-child {
+  margin-top: 0;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.markdown-body h1 {
+  font-size: 2.25rem;
+  border-bottom: 1px solid #d1d9e0b3;
+  padding-bottom: 0.3em;
+}
+
+.markdown-body h2 {
+  font-size: 1.875rem;
+  border-bottom: 1px solid #d1d9e0b3;
+  padding-bottom: 0.3em;
+}
+
+.markdown-body h3 {
+  font-size: 1.5rem;
+}
+
+.markdown-body h4 {
+  font-size: 1.25rem;
+}
+
+.markdown-body h5 {
+  font-size: 1.125rem;
+}
+
+.markdown-body h6 {
+  font-size: 1rem;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  margin-bottom: 1rem;
+  padding-left: 40px;
+}
+
+.markdown-body ul {
+  list-style-type: disc;
+}
+
+.markdown-body ul ul {
+  list-style-type: circle;
+}
+
+.markdown-body ol {
+  list-style-type: decimal;
+}
+
+.markdown-body ol ol {
+  list-style-type: lower-alpha;
+}
+
+.markdown-body ul ul,
+.markdown-body ul ol,
+.markdown-body ol ul,
+.markdown-body ol ol {
+  margin-bottom: 0;
+}
+
+.markdown-body p {
+  margin-bottom: 1rem;
+}
+
+.markdown-body blockquote {
+  display: block;
+  width: 100%;
+  border-left: 10px solid #d1d5db;
+  background-color: #f1f5f9;
+  padding-top: 1rem;
+  padding-bottom: 0.1rem;
+  padding-inline: 0.625rem;
+  margin: 1.5rem 0.635rem;
+}
+
+.markdown-body textarea,
+.markdown-body code {
+  font-family: "Jetbrains Mono", monospace;
+}
+
+.markdown-body a {
+  color: #2563eb;
+}
+
+.markdown-body a:hover {
+  text-decoration: underline;
+  color: #1d4ed8;
+}
+
+textarea {
+  font-family: "Jetbrains Mono", monospace;
+}
+
+/* button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+} */
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
