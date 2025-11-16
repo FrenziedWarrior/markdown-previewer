@@ -1,4 +1,10 @@
-import { log } from "./logging";
+// import { log } from "./logging";
+
+interface CodeblockMap {
+  [key: number]: string;
+}
+
+const codeblockMap: CodeblockMap = {};
 
 const UNORDERED_LIST_PARSE_RULES: [RegExp, string] = [
   /(((?<![ ]{4})(^|\n)- .+?)+)(?=$|\n\n[ ]{0,3}(\w|[#*>]))/gs,
@@ -25,12 +31,12 @@ const BLOCKQUOTE_PARSE_RULES: [RegExp, string] = [
   "<blockquote>$1</blockquote>",
 ];
 
-const PARSE_RULES: [RegExp, string][] = [
-  [
-    /```[a-zA-Z.0-9#-]*\n(.+?)```/gs,
-    "<pre class='bg-slate-100 rounded-md p-4 text-sm overflow-x-scroll'><code>$1</code></pre>",
-  ],
+const CODEBLOCK_PARSE_RULES: [RegExp, string] = [
+  /```[a-zA-Z.0-9#-]*\n(.+?)```/gs,
+  "<pre><code>$1</code></pre>",
+];
 
+const PARSE_RULES: [RegExp, string][] = [
   [/^#{6} (.+)/gm, "<h6>$1</h6>"],
   [/^#{5} (.+)/gm, "<h5>$1</h5>"],
   [/^#{4} (.+)/gm, "<h4>$1</h4>"],
@@ -38,7 +44,9 @@ const PARSE_RULES: [RegExp, string][] = [
   [/^#{2} (.+)/gm, "<h2>$1</h2>"],
   [/^# (.+)/gm, "<h1>$1</h1>"],
 
-  [/^\*{3}$/gm, "<hr/>"],
+  [/^\*\*\*+$/gm, "<hr/>"],
+  [/^---+$/gm, "<hr/>"],
+  [/^___+$/gm, "<hr/>"],
 
   [/\n\n([^<].*?)(?=<|\n\n|$)/gs, "<p>$1</p>"],
   [/^([^<].*?)(?=<|$)/gs, "<p>$1</p>"],
@@ -179,8 +187,39 @@ function parseBlockquote(inputText: string) {
   return output;
 }
 
-export function parseMarkdown(inputText: string) {
+// Capture the codeblocks, and store them for re-insertion after other patterns are parsed
+function parseCodeBlock(inputText: string) {
   let output = inputText;
+
+  const codeblockPattern = CODEBLOCK_PARSE_RULES[0];
+  const codeblockTarget = CODEBLOCK_PARSE_RULES[1];
+
+  const codeblockMatches = output.matchAll(codeblockPattern);
+
+  for (const match of [...codeblockMatches]) {
+    const htmlSanitizedMatch = match[0]
+      .replaceAll(">", "&gt;")
+      .replaceAll("<", "&lt;");
+
+    codeblockMap[match.index] = htmlSanitizedMatch.replace(
+      codeblockPattern,
+      codeblockTarget
+    );
+    output = output.replace(match[0], `$code${match.index}`);
+  }
+
+  return output;
+}
+
+export function parseMarkdown(inputText: string) {
+  if (!inputText) {
+    return inputText;
+  }
+
+  let output = inputText;
+
+  // Capture the codeblocks, and store them for re-insertion after other patterns are parsed
+  output = parseCodeBlock(output);
 
   output = parseList(output, "ul");
   output = parseList(output, "ol");
@@ -193,6 +232,11 @@ export function parseMarkdown(inputText: string) {
     //   console.log(match);
     // }
     output = output.replace(pattern, target);
+  }
+
+  // Re-insert captured codeblocks in the respective positions
+  for (const [idx, block] of Object.entries(codeblockMap)) {
+    output = output.replace(`$code${idx}`, block);
   }
 
   return output;
